@@ -1,7 +1,6 @@
 package pe.inpe.ms_persona.service;
 
-import pe.inpe.ms_persona.dto.PersonaRequestDTO;
-import pe.inpe.ms_persona.dto.PersonaResponseDTO;
+import pe.inpe.ms_persona.dto.*;
 
 import java.util.List;
 
@@ -13,6 +12,12 @@ public interface PersonaService {
     PersonaResponseDTO updatePersona(Long id, PersonaRequestDTO request);
 
     List<PersonaResponseDTO> getPersonaXNumeroDocumento(String numeroDocumento);
-    // GET /personas?nombre=juan
+
     List<PersonaResponseDTO> getPersonaXNombre(String nombre);
+
+    ValidacionPersonaDTO validarExistenciaPorDocumento(String numeroDocumento);
+
+    ValidacionRolDTO validarSiTieneRol(Long idPersona, Long tipoRolId);
+
+    List<PersonaDireccionResponseDTO> obtenerDireccionesPorPersona(Long idPersona);
 }

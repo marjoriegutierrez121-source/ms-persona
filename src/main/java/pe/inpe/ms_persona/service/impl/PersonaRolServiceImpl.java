@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.inpe.ms_persona.dto.PersonaRolRequestDTO;
 import pe.inpe.ms_persona.dto.PersonaRolResponseDTO;
+import pe.inpe.ms_persona.dto.ValidacionRolDTO;
 import pe.inpe.ms_persona.entity.Persona;
 import pe.inpe.ms_persona.entity.PersonaRol;
 import pe.inpe.ms_persona.exception.ResourceNotFoundException;
@@ -30,7 +31,7 @@ public class PersonaRolServiceImpl implements PersonaRolService {
     @Override
     @Transactional
     public PersonaRolResponseDTO addRolToPersona(Long idPersona, PersonaRolRequestDTO request) {
-        log.info("Asignando rol {} a persona con ID: {}", request.getRolId(), idPersona);
+        log.info("Asignando rol {} a persona con ID: {}", request.getTipoPersonaRolId(), idPersona);
 
         Persona persona = personaRepository.findById(idPersona)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -69,5 +70,10 @@ public class PersonaRolServiceImpl implements PersonaRolService {
                 .stream()
                 .map(personaRolMapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ValidacionRolDTO validarSiTieneRol(Long idPersona, Long tipoRolId) {
+        return null;
     }
 }

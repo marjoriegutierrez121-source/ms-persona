@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "persona_rol")
 @Data
@@ -26,9 +28,18 @@ public class PersonaRol extends AuditModel {
     @JoinColumn(name = "id_persona")
     private Persona persona;
 
-    @Column(name = "rol_id")
-    private Long rolId;
+    @Column(name = "tipo_persona_rol_id")
+    private Long tipoPersonaRolId;
+
+    @Column(name = "fecha_inicio")
+    private LocalDate fechaInicio;
+
+    @Column(name = "fecha_fin")
+    private LocalDate fechaFin;
 
     @Column(name = "estado")
     private Boolean estado = true;
+
+    @Column(name = "observaciones")
+    private String observaciones;
 }

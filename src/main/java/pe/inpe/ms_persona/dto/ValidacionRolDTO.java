@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonaRolResponseDTO {
-
+public class ValidacionRolDTO {
+    private Boolean tieneRol;
     private Long idPersonaRol;
-    private Long personaId;
-    private String personaNombre;
-    private Long tipoPersonaRolId;
-    private Boolean estado;
+    private String mensaje;
 }

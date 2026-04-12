@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonaRolRequestDTO {
-    private Long rolId;
+    private Long tipoPersonaRolId;
     private Boolean estado;
 }

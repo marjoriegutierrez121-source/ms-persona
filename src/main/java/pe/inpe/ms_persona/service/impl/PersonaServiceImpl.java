@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pe.inpe.ms_persona.dto.PersonaRequestDTO;
-import pe.inpe.ms_persona.dto.PersonaResponseDTO;
+import pe.inpe.ms_persona.dto.*;
 import pe.inpe.ms_persona.entity.Persona;
+import pe.inpe.ms_persona.entity.PersonaDireccion;
 import pe.inpe.ms_persona.exception.ResourceNotFoundException;
+import pe.inpe.ms_persona.mapper.PersonaDireccionMapper;
 import pe.inpe.ms_persona.mapper.PersonaMapper;
+import pe.inpe.ms_persona.repository.IPersonaDireccionRepository;
 import pe.inpe.ms_persona.repository.IPersonaRepository;
 import pe.inpe.ms_persona.service.PersonaService;
 
@@ -22,7 +24,9 @@ import java.util.stream.Collectors;
 public class PersonaServiceImpl implements PersonaService {
 
     private final IPersonaRepository personaRepository;
+    private final IPersonaDireccionRepository personaDireccionRepository;
     private final PersonaMapper personaMapper;
+    private final PersonaDireccionMapper personaDireccionMapper;
 
     @Override
     @Transactional
@@ -95,5 +99,20 @@ public class PersonaServiceImpl implements PersonaService {
                 .stream()
                 .map(personaMapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ValidacionPersonaDTO validarExistenciaPorDocumento(String numeroDocumento) {
+        return null;
+    }
+
+    @Override
+    public ValidacionRolDTO validarSiTieneRol(Long idPersona, Long tipoRolId) {
+        return null;
+    }
+
+    @Override
+    public List<PersonaDireccionResponseDTO> obtenerDireccionesPorPersona(Long idPersona) {
+        return null;
     }
 }

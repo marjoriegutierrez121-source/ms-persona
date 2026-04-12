@@ -34,4 +34,7 @@ public class PersonaDireccion extends AuditModel {
 
     @Column(name = "referencia")
     private String referencia;
+
+    @Column(name = "es_principal")
+    private Boolean esPrincipal =false;
 }
