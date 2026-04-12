@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PersonaRolServiceImpl implements PersonaRolService {
 
-    public final IPersonaRepository personaRepository;
-    public final IPersonaRolRepository personaRolRepository;
-    public final PersonaRolMapper personaRolMapper;
+    private final IPersonaRepository personaRepository;
+    private final IPersonaRolRepository personaRolRepository;
+    private final PersonaRolMapper personaRolMapper;
 
     @Override
     @Transactional
@@ -34,12 +34,10 @@ public class PersonaRolServiceImpl implements PersonaRolService {
         log.info("Asignando rol {} a persona con ID: {}", request.getTipoPersonaRolId(), idPersona);
 
         Persona persona = personaRepository.findById(idPersona)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Persona no encontrada con ID: " + idPersona));
+                .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + idPersona));
 
         PersonaRol personaRol = personaRolMapper.toEntity(request);
-
-        personaRol.setPersona(persona);
+        personaRol.setIdPersona(persona.getIdPersona());
 
         if (personaRol.getEstado() == null) {
             personaRol.setEstado(true);
@@ -62,11 +60,10 @@ public class PersonaRolServiceImpl implements PersonaRolService {
         log.info("Obteniendo roles de persona con ID: {}", idPersona);
 
         if (!personaRepository.existsById(idPersona)) {
-            throw new ResourceNotFoundException(
-                    "Persona no encontrada con ID: " + idPersona);
+            throw new ResourceNotFoundException("Persona no encontrada con ID: " + idPersona);
         }
 
-        return personaRolRepository.findByPersonaIdPersonaAndEstadoTrue(idPersona)
+        return personaRolRepository.findByIdPersona(idPersona)
                 .stream()
                 .map(personaRolMapper::toResponseDTO)
                 .collect(Collectors.toList());
@@ -74,6 +71,24 @@ public class PersonaRolServiceImpl implements PersonaRolService {
 
     @Override
     public ValidacionRolDTO validarSiTieneRol(Long idPersona, Long tipoRolId) {
-        return null;
+        log.info("Verificando si persona {} tiene rol activo {}", idPersona, tipoRolId);
+
+        if (!personaRepository.existsById(idPersona)) {
+            return ValidacionRolDTO.builder()
+                    .tieneRol(false)
+                    .mensaje("Persona no encontrada")
+                    .build();
+        }
+
+        boolean tieneRol = personaRolRepository
+                .existsByIdPersonaAndTipoPersonaRolIdAndEstadoTrue(idPersona, tipoRolId);
+
+        return ValidacionRolDTO.builder()
+                .tieneRol(tieneRol)
+                .idPersonaRol(tieneRol ?
+                        personaRolRepository.findByIdPersonaAndTipoPersonaRolIdAndEstadoTrue(idPersona, tipoRolId)
+                        .map(PersonaRol::getIdPersonaRol).orElse(null) : null)
+                .mensaje(tieneRol ? "Rol activo encontrado" : "No tiene el rol activo")
+                .build();
     }
 }

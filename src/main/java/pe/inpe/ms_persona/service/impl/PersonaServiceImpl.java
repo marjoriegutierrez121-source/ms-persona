@@ -34,12 +34,7 @@ public class PersonaServiceImpl implements PersonaService {
         log.info("Creando persona con documento: {}", request.getNumeroDocumento());
 
         Persona persona = personaMapper.toEntity(request);
-
         persona.setEstado(true);
-        persona.setRegistrationDate(LocalDateTime.now());
-        persona.setRegistrationUser("SYSTEM");
-        persona.setLastModificationDate(LocalDateTime.now());
-        persona.setLastModificationUser("SYSTEM");
 
         Persona saved = personaRepository.save(persona);
         log.info("Persona creada con ID: {}", saved.getIdPersona());
@@ -51,11 +46,8 @@ public class PersonaServiceImpl implements PersonaService {
     @Transactional(readOnly = true)
     public PersonaResponseDTO getPersonaXID(Long id) {
         log.info("Buscando persona con ID: {}", id);
-
         Persona persona = personaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Persona no encontrada con ID: " + id));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + id));
         return personaMapper.toResponseDTO(persona);
     }
 
@@ -63,15 +55,10 @@ public class PersonaServiceImpl implements PersonaService {
     @Transactional
     public PersonaResponseDTO updatePersona(Long id, PersonaRequestDTO request) {
         log.info("Actualizando persona con ID: {}", id);
-
         Persona persona = personaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Persona no encontrada con ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + id));
 
         personaMapper.updateEntity(request, persona);
-
-        persona.setLastModificationDate(LocalDateTime.now());
-        persona.setLastModificationUser("SYSTEM");
 
         Persona updated = personaRepository.save(persona);
         log.info("Persona actualizada con ID: {}", updated.getIdPersona());
@@ -83,7 +70,6 @@ public class PersonaServiceImpl implements PersonaService {
     @Transactional(readOnly = true)
     public List<PersonaResponseDTO> getPersonaXNumeroDocumento(String numeroDocumento) {
         log.info("Buscando personas con numeroDocumento: {}", numeroDocumento);
-
         return personaRepository.findByNumeroDocumento(numeroDocumento)
                 .stream()
                 .map(personaMapper::toResponseDTO)
@@ -94,7 +80,6 @@ public class PersonaServiceImpl implements PersonaService {
     @Transactional(readOnly = true)
     public List<PersonaResponseDTO> getPersonaXNombre(String nombre) {
         log.info("Buscando personas con nombre que contenga: {}", nombre);
-
         return personaRepository.findByNombresContainingIgnoreCase(nombre)
                 .stream()
                 .map(personaMapper::toResponseDTO)
@@ -103,16 +88,39 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public ValidacionPersonaDTO validarExistenciaPorDocumento(String numeroDocumento) {
-        return null;
+        log.info("Validando existencia de persona con documento: {}", numeroDocumento);
+
+        List<Persona> personas = personaRepository.findByNumeroDocumento(numeroDocumento);
+        boolean existe = !personas.isEmpty();
+
+        return ValidacionPersonaDTO.builder()
+                .existe(existe)
+                .idPersona(existe ? personas.get(0).getIdPersona() : null)
+                .mensaje(existe ? "Persona encontrada" : "Persona no encontrada")
+                .build();
     }
 
     @Override
     public ValidacionRolDTO validarSiTieneRol(Long idPersona, Long tipoRolId) {
-        return null;
+        // Este método se delega a PersonaRolService
+        return ValidacionRolDTO.builder()
+                .tieneRol(false)
+                .mensaje("Usar PersonaRolService para esta validación")
+                .build();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PersonaDireccionResponseDTO> obtenerDireccionesPorPersona(Long idPersona) {
-        return null;
+        log.info("Obteniendo direcciones de persona ID: {}", idPersona);
+
+        if (!personaRepository.existsById(idPersona)) {
+            throw new ResourceNotFoundException("Persona no encontrada con ID: " + idPersona);
+        }
+
+        List<PersonaDireccion> direcciones = personaDireccionRepository.findByIdPersona(idPersona);
+        return direcciones.stream()
+                .map(personaDireccionMapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 }

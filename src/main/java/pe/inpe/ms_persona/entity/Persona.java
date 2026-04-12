@@ -1,23 +1,19 @@
 package pe.inpe.ms_persona.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import pe.inpe.ms_persona.util.AuditModel;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import pe.inpe.ms_persona.util.auditoria.AuditModel;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "persona")
-@Data
-@SuperBuilder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class Persona extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,9 +50,12 @@ public class Persona extends AuditModel {
     @Column(name = "estado")
     private Boolean estado = true;
 
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PersonaDireccion> direcciones;
-
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PersonaRol> roles;
+    public String getNombreCompleto() {
+        StringBuilder sb = new StringBuilder(nombres)
+                .append(" ").append(apellidoPaterno);
+        if (apellidoMaterno != null && !apellidoMaterno.isBlank()) {
+            sb.append(" ").append(apellidoMaterno);
+        }
+        return sb.toString();
+    }
 }

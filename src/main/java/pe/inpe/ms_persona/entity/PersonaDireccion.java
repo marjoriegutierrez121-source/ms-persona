@@ -1,20 +1,16 @@
 package pe.inpe.ms_persona.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import pe.inpe.ms_persona.util.AuditModel;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import pe.inpe.ms_persona.util.auditoria.AuditModel;
 
 @Entity
 @Table(name = "persona_direccion")
-@Data
-@SuperBuilder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class PersonaDireccion extends AuditModel {
 
     @Id
@@ -22,9 +18,8 @@ public class PersonaDireccion extends AuditModel {
     @Column(name = "id_persona_direccion")
     private Long idPersonaDireccion;
 
-    @ManyToOne
-    @JoinColumn(name = "id_persona")
-    private Persona persona;
+    @Column(name = "id_persona")
+    private Long idPersona;
 
     @Column(name = "id_location")
     private Long idLocation;
@@ -36,5 +31,6 @@ public class PersonaDireccion extends AuditModel {
     private String referencia;
 
     @Column(name = "es_principal")
-    private Boolean esPrincipal =false;
+    private Boolean esPrincipal = false;
+
 }

@@ -1,14 +1,17 @@
 package pe.inpe.ms_persona.repository;
 
+import org.springframework.stereotype.Repository;
 import pe.inpe.ms_persona.entity.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+@Repository
 public interface IPersonaRepository extends JpaRepository<Persona, Long> {
-    // GET /personas?numeroDocumento=12345678
+
     List<Persona> findByNumeroDocumento(String numeroDocumento);
 
-    // GET /personas?nombre=juan
     List<Persona> findByNombresContainingIgnoreCase(String nombres);
+
+    boolean existsByNumeroDocumento(String numeroDocumento);
 }

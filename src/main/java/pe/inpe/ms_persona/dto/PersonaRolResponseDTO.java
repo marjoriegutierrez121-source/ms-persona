@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class PersonaRolResponseDTO {
 
     private Long idPersonaRol;
-    private Long personaId;
-    private String personaNombre;
     private Long tipoPersonaRolId;
     private Boolean estado;
 }

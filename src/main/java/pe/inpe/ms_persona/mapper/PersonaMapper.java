@@ -17,23 +17,9 @@ public interface PersonaMapper {
     @Mapping(target = "registrationUser", ignore = true)
     @Mapping(target = "lastModificationDate", ignore = true)
     @Mapping(target = "lastModificationUser", ignore = true)
-    @Mapping(target = "direcciones", ignore = true)
-    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "estado", constant = "true")
     Persona toEntity(PersonaRequestDTO requestDTO);
 
-    @Mapping(source = "idPersona", target = "idPersona")
-    @Mapping(source = "nombres", target = "nombres")
-    @Mapping(source = "apellidoPaterno", target = "apellidoPaterno")
-    @Mapping(source = "apellidoMaterno", target = "apellidoMaterno")
-    @Mapping(source = "tipoDocumentoId", target = "tipoDocumentoId")
-    @Mapping(source = "numeroDocumento", target = "numeroDocumento")
-    @Mapping(source = "fechaNacimiento", target = "fechaNacimiento")
-    @Mapping(source = "sexoId", target = "sexoId")
-    @Mapping(source = "telefono", target = "telefono")
-    @Mapping(source = "email", target = "email")
-    @Mapping(source = "estado", target = "estado")
-    @Mapping(target = "nombreCompleto", expression = "java(entity.getNombres() + \" \" + entity.getApellidoPaterno() + (entity.getApellidoMaterno() != null ? \" \" + entity.getApellidoMaterno() : \"\"))")
     PersonaResponseDTO toResponseDTO(Persona entity);
 
     @Mapping(target = "idPersona", ignore = true)
@@ -41,8 +27,6 @@ public interface PersonaMapper {
     @Mapping(target = "registrationUser", ignore = true)
     @Mapping(target = "lastModificationDate", ignore = true)
     @Mapping(target = "lastModificationUser", ignore = true)
-    @Mapping(target = "direcciones", ignore = true)
-    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "estado", ignore = true)
     void updateEntity(PersonaRequestDTO requestDTO, @MappingTarget Persona entity);
 

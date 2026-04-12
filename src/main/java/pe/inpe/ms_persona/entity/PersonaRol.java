@@ -1,22 +1,18 @@
 package pe.inpe.ms_persona.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import pe.inpe.ms_persona.util.AuditModel;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import pe.inpe.ms_persona.util.auditoria.AuditModel;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "persona_rol")
-@Data
-@SuperBuilder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class PersonaRol extends AuditModel {
 
     @Id
@@ -24,9 +20,8 @@ public class PersonaRol extends AuditModel {
     @Column(name = "id_persona_rol")
     private Long idPersonaRol;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_persona")
-    private Persona persona;
+    @Column(name = "id_persona")
+    private Long idPersona;
 
     @Column(name = "tipo_persona_rol_id")
     private Long tipoPersonaRolId;
