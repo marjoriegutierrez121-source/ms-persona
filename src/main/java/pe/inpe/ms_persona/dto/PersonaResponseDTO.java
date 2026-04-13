@@ -16,7 +16,7 @@ public class PersonaResponseDTO {
     private String nombres;
     private String apellidoPaterno;
     private String apellidoMaterno;
-    private String nombreCompleto;  // Campo calculado: nombres + apellidos
+    private String nombreCompleto;
     private Long tipoDocumentoId;
     private String numeroDocumento;
     private LocalDate fechaNacimiento;

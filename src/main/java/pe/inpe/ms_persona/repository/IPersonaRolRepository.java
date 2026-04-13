@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface IPersonaRolRepository extends JpaRepository<PersonaRol, Long> {
 
-    List<PersonaRol> findByIdPersona(Long idPersona);  // ✅ EXACTAMENTE ASÍ
+    List<PersonaRol> findByIdPersona(Long idPersona);
 
     boolean existsByIdPersonaAndTipoPersonaRolIdAndEstadoTrue(Long idPersona, Long tipoRolId);
 
